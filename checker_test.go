@@ -87,3 +87,18 @@ func TestAnalyze(t *testing.T) {
 	// 	t.Errorf("error analyzing comparative score of sentence. got: %v", v)
 	// }
 }
+
+func BenchmarkAnalyze(b *testing.B) {
+	text := `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut ligula semper, posuere nisl nec, sagittis tortor. Quisque tincidunt ante a auctor facilisis. Aenean dui lectus, tincidunt semper nisl non, convallis aliquet tortor. Vivamus hendrerit vehicula tempus. Suspendisse tellus elit, venenatis mollis dapibus nec, faucibus ut est. Proin a dolor et dolor gravida viverra in sed est. Pellentesque vulputate turpis vitae velit finibus mattis.
+
+Integer ultrices ac nisi non sodales. Sed velit felis, efficitur nec dapibus non, malesuada eu sem. Curabitur laoreet libero lacinia varius tristique. Ut dictum quis ex sit amet pulvinar. Sed tincidunt, ante non efficitur ornare, erat ligula porta risus, sit amet porttitor ligula odio vulputate ante. Phasellus porttitor faucibus sagittis. Ut malesuada consectetur venenatis. Pellentesque eu magna at dolor pretium maximus. Pellentesque porta velit odio, sit amet efficitur tellus commodo sed. Nam vitae pulvinar metus. Integer vitae risus ac est mattis rutrum vitae a lacus.
+
+In suscipit, risus at malesuada fringilla, dolor lorem interdum orci, at ullamcorper leo nunc sed purus. Vivamus molestie ultrices velit, et auctor dolor accumsan eu. Phasellus tincidunt tempus cursus. Fusce sit amet mattis justo, tincidunt congue neque. Aenean rutrum dolor vel tristique lacinia. Proin aliquet libero a enim iaculis maximus. Nulla est nisi, tincidunt ut feugiat ac, dictum sed tellus. Vestibulum elementum erat nec sem hendrerit sagittis. Etiam non sapien et libero fringilla elementum vel vitae augue. Aenean volutpat fermentum lorem. Nunc imperdiet ex in erat egestas, accumsan cursus diam iaculis. Donec non vehicula nisl, quis fermentum dolor. Pellentesque ultricies ex sit amet volutpat maximus. Vestibulum nec ligula sit amet sem semper tincidunt ut at magna. Integer nec pretium magna.
+
+Phasellus pulvinar orci et dictum fermentum. Ut vestibulum, turpis eget blandit molestie, magna mauris consequat nulla, vitae varius nisi turpis vel nisi. Integer ac eros enim. Integer eu pharetra arcu. Quisque id luctus dui. Curabitur fringilla, nulla quis hendrerit facilisis, justo dui rutrum libero, at auctor nisi nisl viverra sem. Praesent ornare efficitur tincidunt. Vestibulum venenatis bibendum tortor, vel laoreet lacus sagittis eu. Maecenas accumsan, tortor eu euismod dignissim, dui nisl mollis nisl, ac varius nibh lorem sed velit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec sit amet congue massa. Donec eget massa sed enim imperdiet efficitur. Ut tempus porta nulla, ac sollicitudin dui egestas vitae. Nullam euismod erat aliquet mattis molestie. Phasellus placerat, turpis euismod iaculis iaculis, massa quam euismod quam, eu aliquet ligula lectus quis justo. Suspendisse placerat ligula in egestas ullamcorper.
+
+Fusce at eleifend tellus, ac luctus purus. Praesent eu eros sit amet odio bibendum scelerisque. Vestibulum in dui nec ex vulputate semper a vitae lorem. Donec rutrum ex sit amet mauris iaculis consectetur. Fusce ornare luctus augue ut laoreet. Proin dui diam, laoreet eget laoreet et, ultrices eget leo. Pellentesque ac mauris in elit placerat tincidunt id vitae urna. Donec id mauris in velit volutpat convallis. Mauris pulvinar orci sapien, sed pellentesque arcu elementum ac. Nulla facilisi. Cras aliquet mauris et sapien aliquam convallis. Curabitur eu tristique diam.`
+	for n := 0; n < b.N; n++ {
+		Analyze(text)
+	}
+}
