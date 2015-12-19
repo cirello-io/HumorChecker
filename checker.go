@@ -6,6 +6,13 @@ import (
 	"strings"
 )
 
+type sign int
+
+const (
+	positive sign = +1
+	negative sign = -1
+)
+
 type Score struct {
 	// Score is the sum of the sentiment points of the analyzed text.
 	// Negativity will render negative points only, and vice-versa.
@@ -36,62 +43,51 @@ type FullScore struct {
 
 var lettersAndSpaceOnly = regexp.MustCompile(`[^a-zA-Z ]+`)
 
-// Negativity calculates the negative sentiment of a sentence
-func Negativity(phrase string) Score {
-	var hits float64
-	var words []string
-
-	addPush := func(t string, score float64) {
-		hits -= score
-		words = append(words, t)
-	}
-
+func scanPhrase(phrase string, c chan string) {
+	var lettersAndSpaceOnly = regexp.MustCompile(`[^a-zA-Z ]+`)
 	scanner := bufio.NewScanner(strings.NewReader(strings.ToLower(lettersAndSpaceOnly.ReplaceAllString(phrase, " "))))
 	scanner.Split(bufio.ScanWords)
-
-	var count float64
 	for scanner.Scan() {
-		count++
 		word := scanner.Text()
-		if v, ok := afinn[word]; ok && v < 0 {
-			addPush(word, v)
-		}
+		c <- word
 	}
-
-	return Score{
-		Score:       hits,
-		Comparative: hits / count,
-		Words:       words,
-	}
+	close(c)
 }
 
-// Positiviy calculates the positive sentiment of a sentence
-func Positivity(phrase string) Score {
+func calculateScore(phrase string, calcSign sign) Score {
 	var hits float64
 	var words []string
+	var count int
 
-	addPush := func(t string, score float64) {
-		hits += score
-		words = append(words, t)
-	}
+	c := make(chan string)
+	go scanPhrase(phrase, c)
 
-	scanner := bufio.NewScanner(strings.NewReader(strings.ToLower(lettersAndSpaceOnly.ReplaceAllString(phrase, " "))))
-	scanner.Split(bufio.ScanWords)
-
-	var count float64
-	for scanner.Scan() {
+	for word := range c {
 		count++
-		word := scanner.Text()
-		if v, ok := afinn[word]; ok && v > 0 {
-			addPush(word, v)
+		if v, ok := afinn[word]; ok {
+			if (calcSign == positive && v > 0) || (calcSign == negative && v < 0) {
+				hits += v * float64(calcSign)
+				words = append(words, word)
+			}
 		}
 	}
 
 	return Score{
 		Score:       hits,
-		Comparative: hits / count,
+		Comparative: hits / float64(count),
 		Words:       words,
 	}
+
+}
+
+// Negativity calculates the negative sentiment of a sentence
+func Negativity(phrase string) Score {
+	return calculateScore(phrase, negative)
+}
+
+// Positivity calculates the positive sentiment of a sentence
+func Positivity(phrase string) Score {
+	return calculateScore(phrase, positive)
 }
 
 // Analyze calculates overall sentiment
