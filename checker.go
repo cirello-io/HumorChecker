@@ -45,27 +45,17 @@ type FullScore struct {
 
 var lettersAndSpaceOnly = regexp.MustCompile(`[^a-zA-Z ]+`)
 
-func scanPhrase(phrase string, c chan string) {
-	var lettersAndSpaceOnly = regexp.MustCompile(`[^a-zA-Z ]+`)
-	scanner := bufio.NewScanner(strings.NewReader(strings.ToLower(lettersAndSpaceOnly.ReplaceAllString(phrase, " "))))
-	scanner.Split(bufio.ScanWords)
-	for scanner.Scan() {
-		word := scanner.Text()
-		c <- word
-	}
-	close(c)
-}
-
 func calculateScore(phrase string, calcSign sign) Score {
 	var hits float64
 	var words []string
 	var count int
 
-	c := make(chan string)
-	go scanPhrase(phrase, c)
-
-	for word := range c {
+	var lettersAndSpaceOnly = regexp.MustCompile(`[^a-zA-Z ]+`)
+	scanner := bufio.NewScanner(strings.NewReader(strings.ToLower(lettersAndSpaceOnly.ReplaceAllString(phrase, " "))))
+	scanner.Split(bufio.ScanWords)
+	for scanner.Scan() {
 		count++
+		word := scanner.Text()
 		if v, ok := afinn[word]; ok {
 			if (calcSign == positive && v > 0) || (calcSign == negative && v < 0) {
 				hits += v * float64(calcSign)
