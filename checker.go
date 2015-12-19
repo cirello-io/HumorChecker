@@ -13,6 +13,7 @@ const (
 	negative sign = -1
 )
 
+//Score is the result of sentiment calculation
 type Score struct {
 	// Score is the sum of the sentiment points of the analyzed text.
 	// Negativity will render negative points only, and vice-versa.
@@ -25,6 +26,7 @@ type Score struct {
 	Words []string
 }
 
+//FullScore is the difference between positive and negative sentiment
 type FullScore struct {
 	// Score is the difference between positive and negative sentiment
 	// scores.
@@ -77,7 +79,6 @@ func calculateScore(phrase string, calcSign sign) Score {
 		Comparative: hits / float64(count),
 		Words:       words,
 	}
-
 }
 
 // Negativity calculates the negative sentiment of a sentence
