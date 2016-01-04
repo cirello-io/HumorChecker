@@ -43,14 +43,12 @@ type FullScore struct {
 	Negative Score
 }
 
-var lettersAndSpaceOnly = regexp.MustCompile(`[^a-zA-Z ]+`)
-
 func calculateScore(phrase string, calcSign sign) Score {
 	var hits float64
 	var words []string
 	var count int
-
 	var lettersAndSpaceOnly = regexp.MustCompile(`[^a-zA-Z ]+`)
+	
 	scanner := bufio.NewScanner(strings.NewReader(strings.ToLower(lettersAndSpaceOnly.ReplaceAllString(phrase, " "))))
 	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
