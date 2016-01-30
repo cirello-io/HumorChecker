@@ -6,13 +6,6 @@ import (
 	"strings"
 )
 
-type sign int
-
-const (
-	positive sign = +1
-	negative sign = -1
-)
-
 // analysis is the complete sentiment calculation
 type analysis struct {
 	// positivityScore is the sum of the positive sentiment points of the
