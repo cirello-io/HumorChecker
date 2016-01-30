@@ -19,16 +19,21 @@ Sentiment analysis tool based on the [AFINN-111 wordlist](http://www2.imm.dtu.dk
 ```js
 package main
 
-import hc "cirello.io/HumorChecker"
+import (
+	"fmt"
 
-func main(){
-	hc.Analyze("Hey you worthless scumbag"); //Score: -6, Comparative:-1.5
-	hc.Positivity("This is so cool"); //Score: 1, Comparative:.25
-	hc.Negativity("Hey you worthless scumbag"); //Score: 6, Comparative:1.5
-	hc.Analyze("I am happy"); //Score: 3, Comparative: 1
-	hc.Analyze("I am so happy"); //Score: 6, Comparative: 1.5
-	hc.Analyze("I am extremely happy"); //Score: 12, Comparative: 3
-	hc.Analyze("I am really sad"); //Score: -4, Comparative: -1
+	hc "cirello.io/HumorChecker"
+)
+
+func main() {
+	fmt.Printf("%#v\n", hc.Analyze("Hey you worthless scumbag"))
+	fmt.Printf("%#v\n", hc.Positivity("This is so cool"))
+	fmt.Printf("%#v\n", hc.Negativity("Hey you worthless scumbag"))
+	fmt.Printf("%#v\n", hc.Analyze("I am happy"))
+	fmt.Printf("%#v\n", hc.Analyze("I am so happy"))
+	fmt.Printf("%#v\n", hc.Analyze("I am extremely happy"))
+	fmt.Printf("%#v\n", hc.Analyze("I am really sad"))
 }
+
 ```
 
