@@ -1,4 +1,4 @@
-package HumorChecker // "cirello.io/HumorChecker"
+package HumorChecker // import "cirello.io/HumorChecker"
 
 import (
 	"bufio"
