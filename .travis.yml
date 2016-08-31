@@ -1,5 +1,8 @@
 language: go
 sudo: false
-
+go_import_path: cirello.io/HumorChecker
 go:
   - 1.5
+  - 1.6
+  - 1.7
+  - tip
