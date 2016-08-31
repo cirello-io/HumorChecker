@@ -3,32 +3,30 @@ package HumorChecker
 import "testing"
 
 var negAndPosTests = []struct {
-	Function string
-	Type     string
-	In       string
-	Expected float64
+	Function            string
+	Type                string
+	In                  string
+	Expected            int
+	ExpectedComparative float64
 }{
-	{"Negativity", "Score", "bastard", 5.0},
-	{"Negativity", "Score", "scumbag", 4.0},
-	{"Negativity", "Score", "evil", 3.0},
-	{"Negativity", "Score", "ache", 2.0},
-	{"Negativity", "Score", "anti", 1.0},
+	{"Negativity", "Score", "bastard", 5.0, 0},
+	{"Negativity", "Score", "scumbag", 4.0, 0},
+	{"Negativity", "Score", "evil", 3.0, 0},
+	{"Negativity", "Score", "ache", 2.0, 0},
+	{"Negativity", "Score", "anti", 1.0, 0},
+	{"Negativity", "WordCount", "This is two anti evil words", 2.0, 0},
 
-	{"Negativity", "Comparative", "Hey scumbag", 2.0},
-	{"Negativity", "Comparative", "I'll be here till 5", 0},
+	{"Positivity", "Score", "superb", 5.0, 0},
+	{"Positivity", "Score", "amazing", 4.0, 0},
+	{"Positivity", "Score", "admire", 3.0, 0},
+	{"Positivity", "Score", "amaze", 2.0, 0},
+	{"Positivity", "Score", "cool", 1.0, 0},
+	{"Positivity", "WordCount", "This is two amazing cool words", 2.0, 0},
 
-	{"Negativity", "WordCount", "This is two anti evil words", 2.0},
-
-	{"Positivity", "Score", "superb", 5.0},
-	{"Positivity", "Score", "amazing", 4.0},
-	{"Positivity", "Score", "admire", 3.0},
-	{"Positivity", "Score", "amaze", 2.0},
-	{"Positivity", "Score", "cool", 1.0},
-
-	{"Positivity", "Comparative", "Hey amazing", 2.0},
-	{"Positivity", "Comparative", "I'll be here till 5", 0.0},
-
-	{"Positivity", "WordCount", "This is two amazing cool words", 2.0},
+	{"Negativity", "Comparative", "Hey scumbag", 0, 2.0},
+	{"Negativity", "Comparative", "I'll be here till 5", 0, 0},
+	{"Positivity", "Comparative", "Hey amazing", 0, 2.0},
+	{"Positivity", "Comparative", "I'll be here till 5", 0, 0.0},
 }
 
 func TestNegAndPos(t *testing.T) {
@@ -48,7 +46,7 @@ func TestNegAndPos(t *testing.T) {
 				t.Errorf("got wrong score for %s in %s. got: %v. expected: %v", test.Function, test.In, result.Score, test.Expected)
 			}
 		} else if test.Type == "Comparative" {
-			if result.Comparative != test.Expected {
+			if result.Comparative != test.ExpectedComparative {
 				t.Errorf("got wrong comparative for %s in %s. got: %v. expected: %v", test.Function, test.In, result.Comparative, test.Expected)
 			}
 		} else if test.Type == "WordCount" {

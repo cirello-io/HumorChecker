@@ -2,19 +2,19 @@ package HumorChecker // import "cirello.io/HumorChecker"
 
 import (
 	"bufio"
-	"regexp"
-	"strings"
+	"bytes"
+	"io"
 )
 
 // analysis is the complete sentiment calculation
 type analysis struct {
 	// positivityScore is the sum of the positive sentiment points of the
 	// analyzed text.
-	positivityScore float64
+	positivityScore int
 
 	// negativityScore is the sum of the negativity sentiment points of the
 	// analyzed text.
-	negativityScore float64
+	negativityScore int
 
 	// positivityComparative establishes a ratio of sentiment per positive
 	// word
@@ -35,7 +35,7 @@ type analysis struct {
 type Score struct {
 	// Score is the sum of the sentiment points of the analyzed text.
 	// Negativity will render negative points only, and vice-versa.
-	Score float64
+	Score int
 
 	// Comparative establishes a ratio of sentiment per word
 	Comparative float64
@@ -48,7 +48,7 @@ type Score struct {
 type FullScore struct {
 	// Score is the difference between positive and negative sentiment
 	// scores.
-	Score float64
+	Score int
 
 	// Comparative is the difference between positive and negative sentiment
 	// comparative scores.
@@ -61,14 +61,25 @@ type FullScore struct {
 	Negative Score
 }
 
-var lettersAndSpaceOnly = regexp.MustCompile(`[^a-zA-Z ]+`)
+func keepLettersAndSpace(str string) io.Reader {
+	var buf bytes.Buffer
+	for _, v := range str {
+		switch {
+		case v >= 'A' && v <= 'Z':
+			buf.WriteRune(v + 32)
+		case v >= 'a' && v <= 'z' || v == ' ':
+			buf.WriteRune(v)
+		}
+	}
+	return &buf
+}
 
 func calculateScore(phrase string) analysis {
-	var phits, nhits float64
+	var phits, nhits int
 	var pwords, nwords []string
 	var count int
 
-	scanner := bufio.NewScanner(strings.NewReader(strings.ToLower(lettersAndSpaceOnly.ReplaceAllString(phrase, " "))))
+	scanner := bufio.NewScanner(keepLettersAndSpace(phrase))
 	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
 		count++
@@ -86,10 +97,10 @@ func calculateScore(phrase string) analysis {
 
 	return analysis{
 		positivityScore:       phits,
-		positivityComparative: phits / float64(count),
+		positivityComparative: float64(phits / count),
 		positiveWords:         pwords,
 		negativityScore:       nhits,
-		negativityComparative: nhits / float64(count),
+		negativityComparative: float64(nhits / count),
 		negativeWords:         nwords,
 	}
 }
