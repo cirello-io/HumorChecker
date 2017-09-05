@@ -1,6 +1,6 @@
 # HumorChecker - port of SentiMental into Go.
 
-[![Build Status](https://travis-ci.org/ccirello/HumorChecker.svg?branch=master)](https://travis-ci.org/ccirello/HumorChecker)
+[![Build Status](https://travis-ci.org/ucirello/HumorChecker.svg?branch=master)](https://travis-ci.org/ucirello/HumorChecker)
 
 Credits where credits are due: consider starring [SentiMental](https://github.com/thinkroth/Sentimental) repo on which this one was based.
 
