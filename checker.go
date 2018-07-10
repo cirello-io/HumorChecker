@@ -1,3 +1,4 @@
+// Package HumorChecker implements sentiment analysis tool based on the [AFINN-111 wordlist](http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010).
 package HumorChecker // import "cirello.io/HumorChecker"
 
 import (
