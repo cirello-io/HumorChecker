@@ -1,5 +1,7 @@
 # HumorChecker - port of SentiMental into Go.
 
+[![Go](https://github.com/cirello-io/HumorChecker/actions/workflows/go.yml/badge.svg)](https://github.com/cirello-io/HumorChecker/actions/workflows/go.yml)
+
 Credits where credits are due: consider starring [SentiMental](https://github.com/thinkroth/Sentimental) repo on which this one was based.
 
 Sentiment analysis tool based on the [AFINN-111 wordlist](http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010).
